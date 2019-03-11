@@ -18,24 +18,24 @@ public class DbOperations {
             sessionObj = HibernateUtil.getSessionFactory().openSession();
             // Getting Transaction Object From Session Object
             sessionObj.beginTransaction();
-            for(int j = 101; j <= 103; j++) {
+          /*  for(int j = 101; j <= 103; j++) {
 
                 departmentObj = new  Department();
                 departmentObj.setName("Programming Department"+j);
                 departmentObj.setStatus(false);
                 sessionObj.save(departmentObj);
-            }
+            }*/
 
 
 
             // Creating Transaction Entities
-            for(int j = 101; j <= 105; j++) {
-                count = count + 1;
+            for(int j = 1; j <= 5; j++) {
+              //  count = count + 1;
                 workerObj = new Worker();
-                //workerObj.setId(j);
-                workerObj.setFullName("Joey");
-                workerObj.setAge(j);
-                workerObj.setDepartment(departmentObj);
+                workerObj.setId(j);
+                workerObj.setFullName("Joey"+j);
+                workerObj.setAge(j+20);
+                workerObj.setDepartment((Department) sessionObj.get(Department.class, 2));
                 workerObj.setAvailability(Availability.FULLTIME);
                 sessionObj.save(workerObj);
             }
@@ -91,6 +91,7 @@ public class DbOperations {
 
             // Creating Transaction Entity
             Worker worObj = (Worker) sessionObj.get(Worker.class, worker_id);
+//            worObj.setId(worker_id);
             worObj.setFullName("Java Code Geek");
             worObj.setAge(200);
             worObj.setAvailability(Availability.PARTTIME);

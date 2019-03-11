@@ -24,5 +24,12 @@ public class Department implements Serializable {
     @Column(name="status")
     private Boolean status;
 
-
+    @Override
+    public String toString() {
+        return "Department{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", status=" + status +
+                '}';
+    }
 }
