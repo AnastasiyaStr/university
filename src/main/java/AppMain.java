@@ -1,27 +1,26 @@
 
+import DAO.DepartmentDAO;
+import DAO.WorkerDAO;
 import entity.Department;
 import entity.Worker;
 
 import java.util.List;
-
-//import org.apache.log4j.Logger;
-
 public class AppMain {
 
-    //  public final static Logger logger = Logger.getLogger(AppMain.class);
+
 
     public static void main(String[] args) {
         System.out.println(".......Hibernate Crud Operations Example.......\n");
 
         System.out.println("\n=======CREATE RECORDS WORKER=======\n");
-        DbOperations.createRecord();
+        WorkerDAO.createRecord();
         System.out.println("\n=======CREATE RECORDS DEPARTMENT=======\n");
         DepartmentDAO.createRecord();
         System.out.println("\n=======READ RECORDS WORKER=======\n");
-        List<Worker> viewWorkers = DbOperations.displayRecords();
+        List<Worker> viewWorkers = WorkerDAO.displayRecords();
         if(viewWorkers != null & viewWorkers.size() > 0) {
             for(Worker workerObj : viewWorkers) {
-                //  logger.info(studentObj.toString());
+
                 System.out.println(workerObj);
             }
         }
@@ -29,15 +28,14 @@ public class AppMain {
         List<Department> viewDepartments = DepartmentDAO.displayRecords();
         if(viewDepartments != null & viewDepartments.size() > 0) {
             for(Department departmentObj : viewDepartments) {
-                //  logger.info(studentObj.toString());
                 System.out.println(departmentObj);
             }
         }
         System.out.println("\n=======UPDATE RECORDS WORKER=======\n");
         int updateWorkerId = 1;
-        DbOperations.updateRecord(updateWorkerId);
+        WorkerDAO.updateRecord(updateWorkerId);
         System.out.println("\n=======READ RECORDS AFTER UPDATION WORKER=======\n");
-        List<Worker> updateWorker = DbOperations.displayRecords();
+        List<Worker> updateWorker = WorkerDAO.displayRecords();
         if(updateWorker != null & updateWorker.size() > 0) {
             for(Worker workerObj : updateWorker) {
                 System.out.println(workerObj.toString());
@@ -58,14 +56,14 @@ public class AppMain {
 
         System.out.println("\n=======DELETE WORKER RECORD=======\n");
         int deleteWorkerId = 1;
-        DbOperations.deleteRecord(deleteWorkerId);
+        WorkerDAO.deleteRecord(deleteWorkerId);
 
         System.out.println("\n=======DELETE DEPARTMENT RECORD=======\n");
         int deleteDepartmentId = 1;
         DepartmentDAO.deleteRecord(deleteDepartmentId);
 
       System.out.println("\n=======READ WORKER RECORDS AFTER DELETION=======\n");
-        List<Worker> deleteWorkerRecord = DbOperations.displayRecords();
+        List<Worker> deleteWorkerRecord = WorkerDAO.displayRecords();
         for(Worker workerObj : deleteWorkerRecord) {
             System.out.println( workerObj.toString());
         }
@@ -77,16 +75,16 @@ public class AppMain {
         }
 
         System.out.println("\n=======DELETE ALL WORKER RECORDS=======\n");
-        DbOperations.deleteAllRecords();
+        WorkerDAO.deleteAllRecords();
         System.out.println("\n=======READ WORKER RECORDS AFTER ALL RECORDS DELETION=======");
-        List deleteAll = DbOperations.displayRecords();
+        List deleteAll = WorkerDAO.displayRecords();
         if(deleteAll.size() == 0) {
             System.out.println("\nNo Worker Records Are Present In The Database Table!\n");
         }
         System.out.println("\n=======DELETE ALL DEPARTMENT RECORDS=======\n");
         DepartmentDAO.deleteAllRecords();
         System.out.println("\n=======READ DEPARTMENT RECORDS AFTER ALL RECORDS DELETION=======");
-        deleteAll = DbOperations.displayRecords();
+        deleteAll = WorkerDAO.displayRecords();
         if(deleteAll.size() == 0) {
             System.out.println("\nNo Department Records Are Present In The Database Table!\n");
         }

@@ -1,60 +1,46 @@
-import org.hibernate.Session;
+package DAO;
+
 import java.util.*;
 
+import DAO.HibernateUtil;
 import entity.Availability;
 import entity.Department;
 import entity.Worker;
 import org.hibernate.*;
-public class DepartmentDAO {
+public class WorkerDAO {
+
     static Session sessionObj;
 
     // Method 1: This Method Used To Create A New Worker Record In The Database Table
     public static void createRecord() {
 
-        Department departmentObj = null;
+       Worker workerObj = null;
 
         try {
             // Getting Session Object From SessionFactory
             sessionObj = HibernateUtil.getSessionFactory().openSession();
             // Getting Transaction Object From Session Object
             sessionObj.beginTransaction();
-            for (int j = 1; j <= 4; j++) {
-                departmentObj = new Department();
-                departmentObj.setId(j);
-                departmentObj.setName("Programming Department" + j);
-                departmentObj.setStatus(false);
-                sessionObj.save(departmentObj);
+
+
+            // Creating Transaction Entities
+            for(int j = 1; j <= 5; j++) {
+
+                workerObj = new Worker();
+                workerObj.setId(j);
+                workerObj.setFullName("Joey"+j);
+                workerObj.setAge(j+20);
+                workerObj.setDepartment((Department) sessionObj.get(Department.class, 2));
+                workerObj.setAvailability(Availability.FULLTIME);
+                sessionObj.save(workerObj);
             }
 
+            // Committing The Transactions To The Database
             sessionObj.getTransaction().commit();
-            // logger.info("\nSuccessfully Created '" + count + "' Records In The Database!\n");
-        } catch (Exception sqlException) {
-            if (null != sessionObj.getTransaction()) {
-                // logger.info("\n.......Transaction Is Being Rolled Back.......\n");
-                sessionObj.getTransaction().rollback();
-            }
-            sqlException.printStackTrace();
-        } finally {
-            if (sessionObj != null) {
-                sessionObj.close();
-            }
-        }
-    }
-
-    // Method 2: This Method Is Used To Display The Records From The Database Table
-    @SuppressWarnings("unchecked")
-    public static List displayRecords() {
-        List departmentList = new ArrayList();
-        try {
-            // Getting Session Object From SessionFactory
-            sessionObj = HibernateUtil.getSessionFactory().openSession();
-            // Getting Transaction Object From Session Object
-            sessionObj.beginTransaction();
-
-            departmentList = sessionObj.createQuery("FROM Department").list();
+            System.out.println("\nSuccessfully Created Records In The Database!\n");
         } catch(Exception sqlException) {
             if(null != sessionObj.getTransaction()) {
-                // logger.info("\n.......Transaction Is Being Rolled Back.......\n");
+                System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
                 sessionObj.getTransaction().rollback();
             }
             sqlException.printStackTrace();
@@ -63,10 +49,35 @@ public class DepartmentDAO {
                 sessionObj.close();
             }
         }
-        return departmentList;
     }
+
+    // Method 2: This Method Is Used To Display The Records From The Database Table
+    @SuppressWarnings("unchecked")
+    public static List displayRecords() {
+        List workersList = new ArrayList();
+        try {
+            // Getting Session Object From SessionFactory
+            sessionObj = HibernateUtil.getSessionFactory().openSession();
+            // Getting Transaction Object From Session Object
+            sessionObj.beginTransaction();
+
+            workersList = sessionObj.createQuery("FROM Worker").list();
+        } catch(Exception sqlException) {
+            if(null != sessionObj.getTransaction()) {
+                System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
+                sessionObj.getTransaction().rollback();
+            }
+            sqlException.printStackTrace();
+        } finally {
+            if(sessionObj != null) {
+                sessionObj.close();
+            }
+        }
+        return workersList;
+    }
+
     // Method 3: This Method Is Used To Update A Record In The Database Table
-    public static void updateRecord(int department_id) {
+    public static void updateRecord(int worker_id) {
         try {
             // Getting Session Object From SessionFactory
             sessionObj = HibernateUtil.getSessionFactory().openSession();
@@ -74,17 +85,19 @@ public class DepartmentDAO {
             sessionObj.beginTransaction();
 
             // Creating Transaction Entity
-            Department depObj = (Department) sessionObj.get(Department.class, department_id);
-            depObj.setName("GlobalLogic");
-            depObj.setStatus(false);
+            Worker worObj = (Worker) sessionObj.get(Worker.class, worker_id);
+
+            worObj.setFullName("Java Code Geek");
+            worObj.setAge(200);
+            worObj.setAvailability(Availability.PARTTIME);
 
 
             // Committing The Transactions To The Database
             sessionObj.getTransaction().commit();
-            // logger.info("\nStudent With Id?= " + student_id + " Is Successfully Updated In The Database!\n");
+            System.out.println("\nWorker With Id?= " + worker_id + " Is Successfully Updated In The Database!\n");
         } catch(Exception sqlException) {
             if(null != sessionObj.getTransaction()) {
-                // logger.info("\n.......Transaction Is Being Rolled Back.......\n");
+                System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
                 sessionObj.getTransaction().rollback();
             }
             sqlException.printStackTrace();
@@ -96,22 +109,22 @@ public class DepartmentDAO {
     }
 
     // Method 4(a): This Method Is Used To Delete A Particular Record From The Database Table
-    public static void deleteRecord(Integer department_id) {
+    public static void deleteRecord(Integer worker_id) {
         try {
             // Getting Session Object From SessionFactory
             sessionObj = HibernateUtil.getSessionFactory().openSession();
             // Getting Transaction Object From Session Object
             sessionObj.beginTransaction();
 
-            Department depObj = findRecordById(department_id);
-            sessionObj.delete(depObj);
+            Worker workObj = findRecordById(worker_id);
+            sessionObj.delete(workObj);
 
             // Committing The Transactions To The Database
             sessionObj.getTransaction().commit();
-            //logger.info("\nStudent With Id?= " + student_id + " Is Successfully Deleted From The Database!\n");
+            System.out.println("\nWorker With Id?= " + worker_id + " Is Successfully Deleted From The Database!\n");
         } catch(Exception sqlException) {
             if(null != sessionObj.getTransaction()) {
-                //logger.info("\n.......Transaction Is Being Rolled Back.......\n");
+                System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
                 sessionObj.getTransaction().rollback();
             }
             sqlException.printStackTrace();
@@ -123,24 +136,25 @@ public class DepartmentDAO {
     }
 
     // Method 4(b): This Method To Find Particular Record In The Database Table
-    public static Department findRecordById(Integer find_department_id) {
-        Department findDepartmentObj = null;
+    public static Worker findRecordById(Integer find_worker_id) {
+        Worker findWorkerObj = null;
         try {
             // Getting Session Object From SessionFactory
             sessionObj = HibernateUtil.getSessionFactory().openSession();
             // Getting Transaction Object From Session Object
             sessionObj.beginTransaction();
 
-            findDepartmentObj = (Department) sessionObj.load(Department.class, find_department_id);
+            findWorkerObj = (Worker) sessionObj.load(Worker.class, find_worker_id);
         } catch(Exception sqlException) {
             if(null != sessionObj.getTransaction()) {
-                //logger.info("\n.......Transaction Is Being Rolled Back.......\n");
+                System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
                 sessionObj.getTransaction().rollback();
             }
             sqlException.printStackTrace();
         }
-        return findDepartmentObj;
+        return findWorkerObj;
     }
+
     // Method 5: This Method Is Used To Delete All Records From The Database Table
     public static void deleteAllRecords() {
         try {
@@ -149,15 +163,15 @@ public class DepartmentDAO {
             // Getting Transaction Object From Session Object
             sessionObj.beginTransaction();
 
-            Query queryObj = sessionObj.createQuery("DELETE FROM Department");
+            Query queryObj = sessionObj.createQuery("DELETE FROM Worker");
             queryObj.executeUpdate();
 
             // Committing The Transactions To The Database
             sessionObj.getTransaction().commit();
-            // logger.info("\nSuccessfully Deleted All Records From The Database Table!\n");
+            System.out.println("\nSuccessfully Deleted All Records From The Database Table!\n");
         } catch(Exception sqlException) {
             if(null != sessionObj.getTransaction()) {
-                //logger.info("\n.......Transaction Is Being Rolled Back.......\n");
+                System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
                 sessionObj.getTransaction().rollback();
             }
             sqlException.printStackTrace();
