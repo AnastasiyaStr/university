@@ -1,5 +1,5 @@
-package entity;
-
-public enum Availability {
-    FULLTIME,PARTTIME
-}
+//package entity;
+//
+//public enum Availability {
+//    FULLTIME,PARTTIME
+//}

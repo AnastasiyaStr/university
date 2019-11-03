@@ -1,35 +1,45 @@
 package entity;
 
+import entity.Lector;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
+@ToString
 @Table(name="department")
-public class Department implements Serializable {
+
+
+public class Department {
     @Id
     @Column(name="department_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="name")
-    private String name;
+    @Column(name="department_name")
+    private String departmentName;
 
-    @Column(name="status")
-    private Boolean status;
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn (name="head_of_department")
+    private Lector headOfDepartment;
 
-    @Override
-    public String toString() {
-        return "Department{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", status=" + status +
-                '}';
+    @ManyToMany(mappedBy = "departments")
+    private Set<Lector> lectors = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "university_id")
+    private  University university;
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 }
+
