@@ -45,7 +45,6 @@ public class LectorDAO {
                 lector.setDegree(Degree.ASSISTANT);
                 sessionObj.save(lector);
             }
-
             // Committing The Transactions To The Database
             sessionObj.getTransaction().commit();
 
@@ -76,6 +75,8 @@ public class LectorDAO {
         return query.getResultList();
     }
 
-
-
+    @Override
+    public String toString() {
+        return "\n5 - SEARCH BY TEMPLATE";
+    }
 }

@@ -64,10 +64,11 @@ public class DepartmentDAO {
         CriteriaBuilder builder = sessionObj.getCriteriaBuilder();
         CriteriaQuery<Department> query = builder.createQuery(Department.class);
         Root<Department> root = query.from(Department.class);
-        query.select(root).where(builder.equal(root.get("departmentName"), "Hey1"));
+        query.select(root).where(builder.equal(root.get("departmentName"), departmentName));
         Query<Department> q = sessionObj.createQuery(query);
         Department department = q.getSingleResult();//q.getSingleResult();
         // System.out.println(q.getResultList());
+        System.out.println(department.getLectors().size());
         return department.getLectors().size(); //department.getLectors().size();
     }
 
@@ -78,7 +79,7 @@ public class DepartmentDAO {
         CriteriaBuilder builder = sessionObj.getCriteriaBuilder();
         CriteriaQuery<Department> query = builder.createQuery(Department.class);
         Root<Department> root = query.from(Department.class);
-        query.select(root).where(builder.equal(root.get("departmentName"), "Hey1"));
+        query.select(root).where(builder.equal(root.get("departmentName"), departmentName));
         Query<Department> q = sessionObj.createQuery(query);
         Department department = q.getSingleResult();//q.getSingleResult();
         // System.out.println(q.getResultList());
@@ -95,7 +96,7 @@ public class DepartmentDAO {
         sessionObj = HibernateUtil.getSessionFactory().openSession();
         // Getting Transaction Object From Session Object
         sessionObj.beginTransaction();
-        List totalStudents = sessionObj.createNamedQuery("get_by_rank").setParameter("degree", Degree.ASSISTANT).setParameter("dep_name","Hey1").getResultList();
+        List totalStudents = sessionObj.createNamedQuery("get_by_rank").setParameter("degree", Degree.ASSISTANT).setParameter("dep_name",departmentname).getResultList();
         System.out.println("Total Students: " + totalStudents);
         //        sessionObj = HibernateUtil.getSessionFactory().openSession();
 //        // Getting Transaction Object From Session Object
@@ -112,13 +113,27 @@ public class DepartmentDAO {
 
     }
 
-//    public static Lector showHeadOfDepartment(){
-//
-//    }
+   public static Lector showHeadOfDepartment(String departmentName){
+       sessionObj = HibernateUtil.getSessionFactory().openSession();
+       // Getting Transaction Object From Session Object
+       sessionObj.beginTransaction();
+       CriteriaBuilder builder = sessionObj.getCriteriaBuilder();
+       CriteriaQuery<Department> query = builder.createQuery(Department.class);
+       Root<Department> root = query.from(Department.class);
+       query.select(root).where(builder.equal(root.get("departmentName"), departmentName));
+       Query<Department> q = sessionObj.createQuery(query);
+       Department department = q.getSingleResult();//q.getSingleResult();
+       return department.getHeadOfDepartment();
+   }
 
 
-
-
+    @Override
+    public  String toString() {
+        return "\n1-HEAD OF DEPARTMENT" +
+                "\n2-SHOW DEPARTMENT STATISTIC" +
+                "\n3-SHOW AVERAGE SALARY" +
+                "\n4-COUNT OF EMPLOYEE FOR DEPARTMENT NAME";
+    }
 }
 
 
