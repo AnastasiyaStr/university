@@ -9,38 +9,34 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-public class HibernateUtil {
-    private static SessionFactory sessionFactory ;
-    static {
-//        Configuration configuration = new Configuration().configure();
-//        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
-//        sessionFactory = configuration.buildSessionFactory(builder.build());
 
+/**
+ * class to initialize and return session factory
+ */
+class HibernateUtil {
+    private static SessionFactory sessionFactory;
+
+    static {
         try {
             StandardServiceRegistry standardRegistry = new StandardServiceRegistryBuilder()
-                    .configure( "hibernate.cfg.xml" )
+                    .configure("hibernate.cfg.xml")
                     .build();
 
-            Metadata metadata = new MetadataSources( standardRegistry )
-                    .addAnnotatedClass(Department.class )
-                    .addAnnotatedClass(University.class )
-                    .addAnnotatedClass(Lector.class )
-                    // You can add more entity classes here like above
-                    //.addResource( "Enterfullpath/Mapping.hbm.xml" )
+            Metadata metadata = new MetadataSources(standardRegistry)
+                    .addAnnotatedClass(Department.class)
+                    .addAnnotatedClass(University.class)
+                    .addAnnotatedClass(Lector.class)
                     .getMetadataBuilder()
-                    .applyImplicitNamingStrategy(ImplicitNamingStrategyJpaCompliantImpl.INSTANCE )
+                    .applyImplicitNamingStrategy(ImplicitNamingStrategyJpaCompliantImpl.INSTANCE)
                     .build();
 
-             sessionFactory = metadata.getSessionFactoryBuilder().build();
-            //session = sessionFactory.openSession();
-        }
-        catch(Exception exception)
-        {
+            sessionFactory = metadata.getSessionFactoryBuilder().build();
+        } catch (Exception exception) {
             exception.printStackTrace();
         }
     }
-    public static SessionFactory getSessionFactory() {
+
+    static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
 }

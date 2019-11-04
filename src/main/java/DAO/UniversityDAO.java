@@ -1,41 +1,35 @@
 package DAO;
 
-import entity.Department;
-import entity.Lector;
 import entity.University;
 import org.hibernate.Session;
 
+/**
+ * class to access info about university in database
+ */
 public class UniversityDAO {
-    static Session sessionObj;
+    private static final String SUCCESS_MSG = "\nSuccessfully Created Records In The Database!\n";
+    private static final String ROLLBACK_MSG = "\nTransaction Is Being Rolled Back\n";
+    private static Session SESSION;
+
     public static void createRecord() {
-
         University university = null;
-
         try {
-            // Getting Session Object From SessionFactory
-            sessionObj = HibernateUtil.getSessionFactory().openSession();
-            // Getting Transaction Object From Session Object
-            sessionObj.beginTransaction();
-
-            // Creating Transaction Entities
-
-                university = new University();
-                //university.setId(1);
-                university.setUniversityName("Hogwarts");
-                sessionObj.save(university);
-
-            sessionObj.getTransaction().commit();
-
-            System.out.println("\nSuccessfully Created Records In The Database!\n");
-        } catch(Exception sqlException) {
-            if(null != sessionObj.getTransaction()) {
-                System.out.println("\n.......Transaction Is Being Rolled Back.......\n");
-                sessionObj.getTransaction().rollback();
+            SESSION = HibernateUtil.getSessionFactory().openSession();
+            SESSION.beginTransaction();
+            university = new University();
+            university.setUniversityName("Hogwarts");
+            SESSION.save(university);
+            SESSION.getTransaction().commit();
+            System.out.println(SUCCESS_MSG);
+        } catch (Exception sqlException) {
+            if (null != SESSION.getTransaction()) {
+                System.out.println(ROLLBACK_MSG);
+                SESSION.getTransaction().rollback();
             }
             sqlException.printStackTrace();
         } finally {
-            if(sessionObj != null) {
-                sessionObj.close();
+            if (SESSION != null) {
+                SESSION.close();
             }
         }
     }

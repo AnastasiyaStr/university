@@ -12,16 +12,16 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name="university")
+@Table(name = "university")
 public class University {
     @Id
-    @Column(name="university_id")
+    @Column(name = "university_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="university_name")
+    @Column(name = "university_name")
     private String universityName;
 
-    @OneToMany(mappedBy="university")
+    @OneToMany(mappedBy = "university")
     private Set<Department> departments = new HashSet<>();
 }

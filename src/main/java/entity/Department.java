@@ -1,6 +1,5 @@
 package entity;
 
-import entity.Lector;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,20 +14,20 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 @ToString
-@Table(name="department")
+@Table(name = "department")
 
 
 public class Department {
     @Id
-    @Column(name="department_id")
+    @Column(name = "department_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="department_name")
+    @Column(name = "department_name")
     private String departmentName;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn (name="head_of_department")
+    @PrimaryKeyJoinColumn(name = "head_of_department")
     private Lector headOfDepartment;
 
     @ManyToMany(mappedBy = "departments")
@@ -36,7 +35,7 @@ public class Department {
 
     @ManyToOne
     @JoinColumn(name = "university_id")
-    private  University university;
+    private University university;
 
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
