@@ -1,5 +1,6 @@
 package DAO;
 
+import entity.Degree;
 import entity.Department;
 import entity.Lector;
 import entity.University;
@@ -9,6 +10,7 @@ import org.hibernate.query.Query;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ListJoin;
 import javax.persistence.criteria.Root;
 import java.util.List;
 
@@ -93,10 +95,29 @@ public class DepartmentDAO {
         sessionObj = HibernateUtil.getSessionFactory().openSession();
         // Getting Transaction Object From Session Object
         sessionObj.beginTransaction();
-        List < Object > totalStudents = sessionObj.createNamedQuery("get_by_rank").getResultList();
+        List totalStudents = sessionObj.createNamedQuery("get_by_rank").setParameter("degree", Degree.ASSISTANT).setParameter("dep_name","Hey1").getResultList();
         System.out.println("Total Students: " + totalStudents);
+        //        sessionObj = HibernateUtil.getSessionFactory().openSession();
+//        // Getting Transaction Object From Session Object
+//        sessionObj.beginTransaction();
+//        CriteriaBuilder builder = sessionObj.getCriteriaBuilder();
+//        CriteriaQuery<Lector> query = builder.createQuery(Lector.class);
+//        Root<Lector> employee = query.from(Lector.class);
+//        ListJoin<Lector, Department> tasks = employee.join(Department_.);
+//        query.select(employee)
+//                .where(cb.equal(tasks.get(Task_.supervisor), "Denise"))
+//                .distinct(true);
+//        Query<Employee> query = em.createQuery(query);
+//        query.getResultList().forEach(System.out::println);
 
     }
+
+//    public static Lector showHeadOfDepartment(){
+//
+//    }
+
+
+
 
 }
 

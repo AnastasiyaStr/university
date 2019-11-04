@@ -14,7 +14,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@NamedQuery(name="get_by_rank", query=("SELECT p FROM Lector p JOIN p.departments c WHERE p.degree=\'PROFESSOR\' and c.departmentName= \'Hey1\'"))
+@NamedQuery(name="get_by_rank", query=("SELECT p FROM Lector p JOIN p.departments c WHERE p.degree= :degree and c.departmentName= :dep_name"))
 //@NamedQuery(
 //        name="findAllCustomersWithName",
 //        query="SELECT c FROM Customer c WHERE c.name LIKE :custName"
